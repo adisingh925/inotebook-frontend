@@ -21,7 +21,6 @@ function AddNotes(props) {
         <DialogTitle>{props.dialogTitle}</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
             margin="normal"
             id="title"
             required
@@ -35,12 +34,11 @@ function AddNotes(props) {
           />
 
           <TextField
-            autoFocus
             margin="normal"
-            id="tags"
-            variant="outlined"
-            label="Tags"
+            id="tag"
             name="tag"
+            variant="outlined"
+            label="Tag"
             value={props.note.tag}
             onChange={props.onChange}
             type="text"

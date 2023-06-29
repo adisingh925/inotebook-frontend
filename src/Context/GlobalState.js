@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import NotesContext from "./NotesContext";
-import MakeRequest from "../../Axios/MakeRequest";
-import { json } from "react-router-dom";
+import GlobalContext from "./GlobalContext";
+import MakeRequest from "../Axios/MakeRequest";
 
 const NoteState = (props) => {
   const token =
@@ -17,7 +16,12 @@ const NoteState = (props) => {
       null
     );
 
-    setNotes(response.data);
+    if (response.data.code === 1) {
+      setNotes(response.data.data);
+    }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
   };
 
   const deleteNote = async (id) => {
@@ -34,6 +38,9 @@ const NoteState = (props) => {
       });
       setNotes(newNotes);
     }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
   };
 
   const updateNote = async (note) => {
@@ -56,6 +63,9 @@ const NoteState = (props) => {
 
       setNotes(newNotes);
     }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
   };
 
   const addNote = async (data) => {
@@ -66,15 +76,56 @@ const NoteState = (props) => {
       data
     );
 
-    setNotes(notes.concat(response.data));
+    if (response.data.code === 1) {
+      setNotes(notes.concat(response.data.data));
+    }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
+  };
+
+  const login = async (email, password) => {
+    let response = await MakeRequest(
+      "",
+      "post",
+      "http://localhost:5000/api/auth/login",
+      { email: email, password: password }
+    );
+
+    console.log(response.data);
+  };
+
+  const signup = () => {};
+
+  // -->snackbar related functions
+
+  const [snackbarState, setSnackbarState] = useState(false);
+  const [snackbarText, setSnackbarText] = useState("");
+  const [severity, setSeverity] = useState("success");
+
+  const handleSnackBarClose = () => {
+    setSnackbarState(false);
   };
 
   return (
-    <NotesContext.Provider
-      value={{ notes, setNotes, deleteNote, updateNote, addNote, getAllNotes }}
+    <GlobalContext.Provider
+      value={{
+        notes,
+        setNotes,
+        deleteNote,
+        updateNote,
+        addNote,
+        getAllNotes,
+        snackbarState,
+        snackbarText,
+        severity,
+        handleSnackBarClose,
+        login,
+        signup
+      }}
     >
       {props.children}
-    </NotesContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
-import notesContext from "../Context/Notes/NotesContext";
+import globalContext from "../Context/GlobalContext";
 import NoteItem from "./NoteItem";
 import AddNotes from "./AddNotes";
 import Button from "@mui/material/Button";
@@ -8,8 +8,18 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import SnackBar from "./SnackBar";
 
 function Notes() {
-  const context = useContext(notesContext);
-  const { notes, deleteNote, addNote, updateNote, getAllNotes } = context;
+  const context = useContext(globalContext);
+  const {
+    notes,
+    deleteNote,
+    addNote,
+    updateNote,
+    getAllNotes,
+    snackbarState,
+    snackbarText,
+    severity,
+    handleSnackBarClose,
+  } = context;
 
   useEffect(() => {
     getAllNotes();
@@ -56,27 +66,15 @@ function Notes() {
   const handlePositiveButtonClick = (note) => {
     if (positiveButtonText === "Update") {
       updateNote(note);
-      setSnackbarText("Updated Successfully!");
     } else {
       addNote(note);
-      setSnackbarText("Added Successfully!");
     }
     setOpen(false);
-    setSnackbarState(true);
+    setNote({ title: "", description: "", tag: "" });
   };
 
   const onNoteChange = (event) => {
     setNote({ ...note, [event.target.name]: event.target.value });
-  };
-
-  // -->snackbar related functions
-
-  const [snackbarState, setSnackbarState] = useState(false);
-  const [snackbarText, setSnackbarText] = useState("");
-  const [severity, setSeverity] = useState("success");
-
-  const handleSnackBarClose = () => {
-    setSnackbarState(false);
   };
 
   return (
@@ -110,7 +108,7 @@ function Notes() {
       </Button>
 
       <div className="row">
-        <div className="App my-3">
+        <div className={`App ${notes.length === 0 ? "my-5" : ""}`}>
           {notes.length === 0 && "No notes to display"}
         </div>
 

@@ -8,7 +8,7 @@ function NoteItem(props) {
       <div className="card-body">
         <div className="row row-cols-auto">
           <h5 className="card-title">{props.note.title}</h5>
-          <Chip label={props.note.tag} size="small" color="success" />
+          <Chip label={props.note.tag} size="small" color="primary" />
         </div>
         <p className="card-text">{props.note.description}</p>
         <Fab
