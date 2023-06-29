@@ -1,45 +1,69 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-function AddNotes() {
+function AddNotes(props) {
   return (
-    <div>
-      <h1>Add a note</h1>
-      <form>
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
+    <>
+      <Dialog open={props.dialogState} onClose={props.handleClose}>
+        <DialogTitle>{props.dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{props.dialogTitleContent}</DialogContentText>
+
+          <TextField
+            autoFocus
+            margin="normal"
+            id="title"
+            required
+            name="title"
+            variant="outlined"
+            label="Title"
+            value={props.note.title}
+            onChange={props.onChange}
+            type="text"
+            fullWidth
           />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="exampleInputPassword1"
+
+          <TextField
+            autoFocus
+            margin="normal"
+            id="tags"
+            variant="outlined"
+            label="Tags"
+            name="tag"
+            value={props.note.tag}
+            onChange={props.onChange}
+            type="text"
+            fullWidth
           />
-        </div>
-        <div className="mb-3 form-check">
-          <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            Check me out
-          </label>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </div>
+
+          <TextField
+            id="outlined-multiline-flexible"
+            label="Description"
+            fullWidth
+            required
+            name="description"
+            value={props.note.description}
+            onChange={props.onChange}
+            margin="normal"
+            multiline
+            maxRows={10}
+          />
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleNegative}>Cancel</Button>
+          <Button onClick={props.handlePositive}>
+            {props.positiveButtonText}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
