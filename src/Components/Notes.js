@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import notesContext from "../Context/Notes/NotesContext";
 import NoteItem from "./NoteItem";
@@ -9,26 +9,39 @@ import SnackBar from "./SnackBar";
 
 function Notes() {
   const context = useContext(notesContext);
-  const { notes, setNotes, addNote } = context;
+  const { notes, deleteNote, addNote, updateNote, getAllNotes } = context;
+
+  useEffect(() => {
+    getAllNotes();
+  }, []);
 
   // --> update and delete button functions
 
-  const handleDeleteClicked = () => {};
+  const handleDeleteClicked = (id) => {
+    deleteNote(id);
+  };
 
-  const handleUpdateClicked = () => {};
+  const handleUpdateClicked = (note) => {
+    setNote(note);
+    setPositiveButtonText("Update");
+    setDialogTitle("Update your Note");
+    setOpen(true);
+  };
 
   // --> add/update dialog states and functions
 
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
-  const [dialogTitleContent, setDialogTitleContent] = useState("");
   const [positiveButtonText, setPositiveButtonText] = useState("");
-  const [note, setNote] = useState({title : "",tag : "", description : ""})
+  const [note, setNote] = useState({
+    title: "",
+    tag: "default",
+    description: "",
+  });
 
   const handleAddClicked = () => {
     setPositiveButtonText("Save");
     setDialogTitle("Add New Note");
-    setDialogTitleContent("Add the title and description for your note");
     setOpen(true);
   };
 
@@ -37,25 +50,30 @@ function Notes() {
   };
 
   const handleNegativeButtonClick = () => {
-    setSnackbarState(true)
     setOpen(false);
   };
 
-  const handlePositiveButtonClick = () => {
-    addNote(note)
+  const handlePositiveButtonClick = (note) => {
+    if (positiveButtonText === "Update") {
+      updateNote(note);
+      setSnackbarText("Updated Successfully!");
+    } else {
+      addNote(note);
+      setSnackbarText("Added Successfully!");
+    }
     setOpen(false);
+    setSnackbarState(true);
   };
 
-  const onNoteChange = (event) =>{
-    setNote({...note, [event.target.name] : event.target.value})
-  }
+  const onNoteChange = (event) => {
+    setNote({ ...note, [event.target.name]: event.target.value });
+  };
 
   // -->snackbar related functions
 
   const [snackbarState, setSnackbarState] = useState(false);
-  const [snackbarText, setSnackbarText] = useState("Success");
-  const [snackbarHideDuration, setSnackbarHideDuration] = useState(2000);
-  const [severity, setSeverity] = useState("success")
+  const [snackbarText, setSnackbarText] = useState("");
+  const [severity, setSeverity] = useState("success");
 
   const handleSnackBarClose = () => {
     setSnackbarState(false);
@@ -67,7 +85,6 @@ function Notes() {
         message={snackbarText}
         handleClose={handleSnackBarClose}
         state={snackbarState}
-        hideDuration={snackbarHideDuration}
         severity={severity}
       />
 
@@ -75,7 +92,6 @@ function Notes() {
         dialogState={open}
         handleClose={handleDialogClose}
         dialogTitle={dialogTitle}
-        dialogTitleContent={dialogTitleContent}
         handleNegative={handleNegativeButtonClick}
         handlePositive={handlePositiveButtonClick}
         positiveButtonText={positiveButtonText}
@@ -92,7 +108,12 @@ function Notes() {
       >
         New Note
       </Button>
+
       <div className="row">
+        <div className="App my-3">
+          {notes.length === 0 && "No notes to display"}
+        </div>
+
         {notes.map((note) => {
           return (
             <div className="col-sm-4" key={note._id}>
