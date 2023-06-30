@@ -9,7 +9,7 @@ function NavBar(props) {
   let location = useLocation();
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar border-bottom navbar-expand-lg bg-white">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           {props.heading}
