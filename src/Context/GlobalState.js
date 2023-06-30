@@ -3,9 +3,8 @@ import GlobalContext from "./GlobalContext";
 import MakeRequest from "../Axios/MakeRequest";
 import { useNavigate } from "react-router-dom";
 
+
 const NoteState = (props) => {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5YWQyZDBkMDQ4N2FkN2FjMDFlNmEwIn0sImlhdCI6MTY4Nzg2ODExMn0.3LxBT5DnDfhinvO3sFsJz5rEuyC9-kDHXVh3oZXO1Ik";
 
   let navigate = useNavigate();
 
@@ -13,9 +12,9 @@ const NoteState = (props) => {
 
   const getAllNotes = async () => {
     let response = await MakeRequest(
-      token,
+      localStorage.getItem("token"),
       "get",
-      "http://localhost:5000/api/notes/fetchallnotes",
+      "notes/fetchallnotes",
       null
     );
 
@@ -29,9 +28,9 @@ const NoteState = (props) => {
 
   const deleteNote = async (id) => {
     let response = await MakeRequest(
-      token,
+      localStorage.getItem("token"),
       "delete",
-      `http://localhost:5000/api/notes/deletenote/${id}`,
+      `notes/deletenote/${id}`,
       null
     );
 
@@ -48,9 +47,9 @@ const NoteState = (props) => {
 
   const updateNote = async (note) => {
     let response = await MakeRequest(
-      token,
+      localStorage.getItem("token"),
       "put",
-      `http://localhost:5000/api/notes/updatenote/${note._id}`,
+      `notes/updatenote/${note._id}`,
       note
     );
 
@@ -73,9 +72,9 @@ const NoteState = (props) => {
 
   const addNote = async (data) => {
     let response = await MakeRequest(
-      token,
+      localStorage.getItem("token"),
       "post",
-      "http://localhost:5000/api/notes/addnote",
+      "notes/addnote",
       data
     );
 
@@ -91,7 +90,7 @@ const NoteState = (props) => {
     let response = await MakeRequest(
       "",
       "post",
-      "http://localhost:5000/api/auth/login",
+      "auth/login",
       credentials
     );
 
@@ -107,7 +106,7 @@ const NoteState = (props) => {
     let response = await MakeRequest(
       "",
       "post",
-      "http://localhost:5000/api/auth/createuser",
+      "auth/createuser",
       credentials
     );
 
@@ -118,6 +117,11 @@ const NoteState = (props) => {
       console.log(response.data.msg);
     }
   };
+
+  const onLogoutClick = () =>{
+    localStorage.removeItem("token")
+    navigate("/login")
+  }
 
   // -->snackbar related functions
 
@@ -144,6 +148,7 @@ const NoteState = (props) => {
         handleSnackBarClose,
         login,
         signup,
+        onLogoutClick
       }}
     >
       {props.children}

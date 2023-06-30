@@ -6,9 +6,11 @@ import AddNotes from "./AddNotes";
 import Button from "@mui/material/Button";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import SnackBar from "./SnackBar";
+import { useNavigate } from "react-router-dom";
 
 function Notes() {
   const context = useContext(globalContext);
+  let navigate = useNavigate();
   const {
     notes,
     deleteNote,
@@ -22,7 +24,11 @@ function Notes() {
   } = context;
 
   useEffect(() => {
-    getAllNotes();
+    if (localStorage.getItem("token")) {
+      getAllNotes();
+    } else {
+      navigate("/login");
+    }
   }, []);
 
   // --> update and delete button functions
