@@ -5,19 +5,15 @@ function Login() {
   const context = useContext(globalContext);
   const { login } = context;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
 
-  const handleLoginClicked = async () => {
-    login(email, password);
+  const handleLoginClicked = (e) => {
+    e.preventDefault();
+    login(credentials);
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const onChange = (event) => {
+    setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
   return (
@@ -27,10 +23,12 @@ function Login() {
           <label htmlFor="exampleInputEmail1" className="form-label">
             Email address
           </label>
+
           <input
             type="email"
-            value={email}
-            onChange={handleEmailChange}
+            required
+            name="email"
+            onChange={onChange}
             className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
@@ -45,18 +43,14 @@ function Login() {
           </label>
           <input
             type="password"
-            value={password}
-            onChange={handlePasswordChange}
+            onChange={onChange}
+            required
+            name="password"
+            minLength={6}
             className="form-control"
             id="exampleInputPassword1"
           />
         </div>
-        {/* <div className="mb-3 form-check">
-          <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            Check me out
-          </label>
-        </div> */}
         <button type="submit" className="btn btn-primary">
           Login
         </button>

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import GlobalContext from "./GlobalContext";
 import MakeRequest from "../Axios/MakeRequest";
+import { useNavigate } from "react-router-dom";
 
 const NoteState = (props) => {
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ5YWQyZDBkMDQ4N2FkN2FjMDFlNmEwIn0sImlhdCI6MTY4Nzg2ODExMn0.3LxBT5DnDfhinvO3sFsJz5rEuyC9-kDHXVh3oZXO1Ik";
+
+  let navigate = useNavigate();
 
   const [notes, setNotes] = useState([]);
 
@@ -84,18 +87,37 @@ const NoteState = (props) => {
     setSnackbarState(true);
   };
 
-  const login = async (email, password) => {
+  const login = async (credentials) => {
     let response = await MakeRequest(
       "",
       "post",
       "http://localhost:5000/api/auth/login",
-      { email: email, password: password }
+      credentials
     );
 
-    console.log(response.data);
+    if (response.data.code === 1) {
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } else {
+      console.log(response.data.msg);
+    }
   };
 
-  const signup = () => {};
+  const signup = async (credentials) => {
+    let response = await MakeRequest(
+      "",
+      "post",
+      "http://localhost:5000/api/auth/createuser",
+      credentials
+    );
+
+    if (response.data.code === 1) {
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } else {
+      console.log(response.data.msg);
+    }
+  };
 
   // -->snackbar related functions
 
@@ -121,7 +143,7 @@ const NoteState = (props) => {
         severity,
         handleSnackBarClose,
         login,
-        signup
+        signup,
       }}
     >
       {props.children}
