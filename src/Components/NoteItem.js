@@ -21,7 +21,7 @@ function NoteItem(props) {
         handleClose={handleClose}
         positiveButton={"Delete"}
         negativeButton={"Cancel"}
-        title={"Are you sure you want to delete this note"}
+        title={"Are you sure you want to delete this note?"}
         handlePositiveClick={handlePositiveClick}
       />
       <div className="card mt-4">
