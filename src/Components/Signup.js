@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import globalContext from "../Context/GlobalContext";
+import Button from "@mui/material/Button";
 
 function Signup() {
   const context = useContext(globalContext);
@@ -21,7 +22,16 @@ function Signup() {
   };
 
   return (
-    <div className="container-sm my-5">
+    <div
+      className="container"
+      style={{
+        display: "flex",
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "50px",
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
@@ -71,9 +81,9 @@ function Signup() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <Button type="submit" variant="contained">
           Signup
-        </button>
+        </Button>
       </form>
     </div>
   );

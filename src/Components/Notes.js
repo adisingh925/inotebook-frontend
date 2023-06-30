@@ -5,23 +5,12 @@ import NoteItem from "./NoteItem";
 import AddNotes from "./AddNotes";
 import Button from "@mui/material/Button";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import SnackBar from "./SnackBar";
 import { useNavigate } from "react-router-dom";
 
 function Notes() {
   const context = useContext(globalContext);
   let navigate = useNavigate();
-  const {
-    notes,
-    deleteNote,
-    addNote,
-    updateNote,
-    getAllNotes,
-    snackbarState,
-    snackbarText,
-    severity,
-    handleSnackBarClose,
-  } = context;
+  const { notes, deleteNote, addNote, updateNote, getAllNotes } = context;
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -51,7 +40,7 @@ function Notes() {
   const [positiveButtonText, setPositiveButtonText] = useState("");
   const [note, setNote] = useState({
     title: "",
-    tag: "default",
+    tag: "General",
     description: "",
   });
 
@@ -85,13 +74,6 @@ function Notes() {
 
   return (
     <div>
-      <SnackBar
-        message={snackbarText}
-        handleClose={handleSnackBarClose}
-        state={snackbarState}
-        severity={severity}
-      />
-
       <AddNotes
         dialogState={open}
         handleClose={handleDialogClose}

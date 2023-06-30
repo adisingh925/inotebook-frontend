@@ -1,7 +1,7 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import globalContext from "../Context/GlobalContext";
-
+import Button from "@mui/material/Button";
 
 function NavBar(props) {
   const context = useContext(globalContext);
@@ -30,7 +30,11 @@ function NavBar(props) {
             <li className="nav-item">
               <Link
                 className={`nav-link ${
-                  location.pathname === "/" ? "active" : ""
+                  localStorage.getItem("token")
+                    ? location.pathname === "/"
+                      ? "active"
+                      : ""
+                    : "disabled"
                 }`}
                 aria-current="page"
                 to="/"
@@ -50,10 +54,32 @@ function NavBar(props) {
             </li>
           </ul>
 
-          {!localStorage.getItem("token") ? <form className="d-flex" role="search">
-          <Link className="btn btn-primary mx-2" to="/login" role="button">Login</Link>
-          <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>
-          </form> : <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>}
+          {!localStorage.getItem("token") ? (
+            <form className="d-flex" role="search">
+              <Button
+                component={Link}
+                to="/login"
+                variant="contained"
+                color="primary"
+                style={{ marginRight: "10px" }}
+              >
+                Login
+              </Button>
+
+              <Button
+                component={Link}
+                to="/signup"
+                variant="contained"
+                color="primary"
+              >
+                Signup
+              </Button>
+            </form>
+          ) : (
+            <Button variant="contained" color="primary" onClick={onLogoutClick}>
+              Logout
+            </Button>
+          )}
         </div>
       </div>
     </nav>

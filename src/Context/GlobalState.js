@@ -3,9 +3,7 @@ import GlobalContext from "./GlobalContext";
 import MakeRequest from "../Axios/MakeRequest";
 import { useNavigate } from "react-router-dom";
 
-
 const NoteState = (props) => {
-
   let navigate = useNavigate();
 
   const [notes, setNotes] = useState([]);
@@ -20,10 +18,11 @@ const NoteState = (props) => {
 
     if (response.data.code === 1) {
       setNotes(response.data.data);
+    } else {
+      setSeverity("error");
+      setSnackbarText(response.data.msg);
+      setSnackbarState(true);
     }
-
-    setSnackbarText(response.data.msg);
-    setSnackbarState(true);
   };
 
   const deleteNote = async (id) => {
@@ -39,6 +38,9 @@ const NoteState = (props) => {
         return note._id !== id;
       });
       setNotes(newNotes);
+      setSeverity("success");
+    } else {
+      setSeverity("error");
     }
 
     setSnackbarText(response.data.msg);
@@ -46,6 +48,10 @@ const NoteState = (props) => {
   };
 
   const updateNote = async (note) => {
+    if (note.tag.length === 0) {
+      note.tag = "General";
+    }
+
     let response = await MakeRequest(
       localStorage.getItem("token"),
       "put",
@@ -64,22 +70,31 @@ const NoteState = (props) => {
       }
 
       setNotes(newNotes);
+      setSeverity("success");
+    } else {
+      setSeverity("error");
     }
 
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
   };
 
-  const addNote = async (data) => {
+  const addNote = async (note) => {
+    if (note.tag.length === 0) {
+      note.tag = "General";
+    }
     let response = await MakeRequest(
       localStorage.getItem("token"),
       "post",
       "notes/addnote",
-      data
+      note
     );
 
     if (response.data.code === 1) {
       setNotes(notes.concat(response.data.data));
+      setSeverity("success");
+    } else {
+      setSeverity("error");
     }
 
     setSnackbarText(response.data.msg);
@@ -87,19 +102,18 @@ const NoteState = (props) => {
   };
 
   const login = async (credentials) => {
-    let response = await MakeRequest(
-      "",
-      "post",
-      "auth/login",
-      credentials
-    );
+    let response = await MakeRequest("", "post", "auth/login", credentials);
 
     if (response.data.code === 1) {
       localStorage.setItem("token", response.data.token);
       navigate("/");
+      setSeverity("success");
     } else {
-      console.log(response.data.msg);
+      setSeverity("error");
     }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
   };
 
   const signup = async (credentials) => {
@@ -113,15 +127,22 @@ const NoteState = (props) => {
     if (response.data.code === 1) {
       localStorage.setItem("token", response.data.token);
       navigate("/");
+      setSeverity("success");
     } else {
-      console.log(response.data.msg);
+      setSeverity("error");
     }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
   };
 
-  const onLogoutClick = () =>{
-    localStorage.removeItem("token")
-    navigate("/login")
-  }
+  const onLogoutClick = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+
+    setSnackbarText("Successfully logged out!");
+    setSnackbarState(true);
+  };
 
   // -->snackbar related functions
 
@@ -148,7 +169,7 @@ const NoteState = (props) => {
         handleSnackBarClose,
         login,
         signup,
-        onLogoutClick
+        onLogoutClick,
       }}
     >
       {props.children}
