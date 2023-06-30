@@ -6,7 +6,7 @@ function NoteItem(props) {
   return (
     <div className="card mt-4">
       <div className="card-body">
-        <span class="badge rounded-pill text-bg-primary">{props.note.tag}</span>
+        <span className="badge rounded-pill text-bg-primary">{props.note.tag}</span>
         <h5 className="card-title my-2">{props.note.title}</h5>
         <p className="card-text">{props.note.description}</p>
         <Fab
