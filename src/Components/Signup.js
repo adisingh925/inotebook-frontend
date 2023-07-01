@@ -74,7 +74,7 @@ function Signup() {
             onChange={handleOnChange}
             name="password"
             required
-            autoComplete="auto"
+            autoComplete="on"
             minLength={6}
             className="form-control"
             id="password"

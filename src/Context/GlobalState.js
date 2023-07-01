@@ -142,7 +142,7 @@ const NoteState = (props) => {
 
     setSnackbarText("Successfully logged out!");
     setSnackbarState(true);
-    setNotes([])
+    setNotes([]);
   };
 
   // -->snackbar related functions

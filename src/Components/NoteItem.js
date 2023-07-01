@@ -11,7 +11,7 @@ function NoteItem(props) {
 
   const handlePositiveClick = () => {
     props.handleDeleteClicked(props.note._id);
-    setState(false)
+    setState(false);
   };
 
   return (
@@ -24,7 +24,7 @@ function NoteItem(props) {
         title={"Are you sure you want to delete this note?"}
         handlePositiveClick={handlePositiveClick}
       />
-      <div className="card mt-4">
+      <div className="card mt-4 shadow">
         <div className="card-body">
           <span className="badge rounded-pill text-bg-primary">
             {props.note.tag}

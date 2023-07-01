@@ -55,6 +55,7 @@ function Login() {
             type="password"
             onChange={onChange}
             required
+            autoComplete="on"
             name="password"
             minLength={6}
             className="form-control"
