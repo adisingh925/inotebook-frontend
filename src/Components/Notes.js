@@ -18,7 +18,7 @@ function Notes() {
     } else {
       navigate("/login");
     }
-  }, []);
+  });
 
   // --> update and delete button functions
 
