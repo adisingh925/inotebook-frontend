@@ -1,29 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Fab from "@mui/material/Fab";
-import Confirmation from "./Confirmation";
 
 function NoteItem(props) {
-  const [state, setState] = useState(false);
-
-  const handleClose = () => {
-    setState(false);
-  };
-
-  const handlePositiveClick = () => {
-    props.handleDeleteClicked(props.note._id);
-    setState(false);
-  };
-
   return (
     <>
-      <Confirmation
-        state={state}
-        handleClose={handleClose}
-        positiveButton={"Delete"}
-        negativeButton={"Cancel"}
-        title={"Are you sure you want to delete this note?"}
-        handlePositiveClick={handlePositiveClick}
-      />
       <div className="card mt-4 shadow">
         <div className="card-body">
           <span className="badge rounded-pill text-bg-primary">
@@ -34,7 +14,7 @@ function NoteItem(props) {
           <Fab
             size="small"
             onClick={() => {
-              setState(true);
+              props.handleDeleteClicked(props.note._id);
             }}
             color="primary"
             aria-label="add"

@@ -7,12 +7,24 @@ import Signup from "./Signup";
 import SnackBar from "./SnackBar";
 import { useContext } from "react";
 import globalContext from "../Context/GlobalContext";
+import LoadingBar from "react-top-loading-bar";
+import Confirmation from "./Confirmation";
 
 function Main() {
   const context = useContext(globalContext);
 
-  const { snackbarState, snackbarText, severity, handleSnackBarClose } =
-    context;
+  const {
+    snackbarState,
+    snackbarText,
+    severity,
+    handleSnackBarClose,
+    progress,
+    confirmationState,
+    confirmationHandleClose,
+    handleConfirmationPositiveClick,
+    confirmationDialogTitle,
+    confirmationPositiveButtonText,
+  } = context;
 
   return (
     <>
@@ -20,10 +32,20 @@ function Main() {
         message={snackbarText}
         handleClose={handleSnackBarClose}
         state={snackbarState}
-        sx={{ width: '100%' }}
+        sx={{ width: "100%" }}
         severity={severity}
       />
 
+      <Confirmation
+        state={confirmationState}
+        handleClose={confirmationHandleClose}
+        positiveButton={confirmationPositiveButtonText}
+        negativeButton={"Cancel"}
+        title={confirmationDialogTitle}
+        handlePositiveClick={handleConfirmationPositiveClick}
+      />
+
+      <LoadingBar color="#1565c0" height={3} progress={progress} />
 
       <Routes>
         <Route exact path="/" element={<Home />} />

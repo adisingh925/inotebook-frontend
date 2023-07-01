@@ -26,28 +26,15 @@ const NoteState = (props) => {
   };
 
   const deleteNote = async (id) => {
-    let response = await MakeRequest(
-      localStorage.getItem("token"),
-      "delete",
-      `notes/deletenote/${id}`,
-      null
-    );
-
-    if (response.data.code === 1) {
-      const newNotes = notes.filter((note) => {
-        return note._id !== id;
-      });
-      setNotes(newNotes);
-      setSeverity("success");
-    } else {
-      setSeverity("error");
-    }
-
-    setSnackbarText(response.data.msg);
-    setSnackbarState(true);
+    setDeleteId(id);
+    setConfirmationDialogTitle("Are you sure you want to delete this note?");
+    setConfirmationPositiveButtonText("Delete");
+    setconfirmationState(true);
   };
 
   const updateNote = async (note) => {
+    setProgress(10);
+
     if (note.tag.length === 0) {
       note.tag = "General";
     }
@@ -58,6 +45,8 @@ const NoteState = (props) => {
       `notes/updatenote/${note._id}`,
       note
     );
+
+    setProgress(50);
 
     if (response.data.code === 1) {
       let newNotes = JSON.parse(JSON.stringify(notes));
@@ -77,18 +66,25 @@ const NoteState = (props) => {
 
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
+
+    setProgress(100);
   };
 
   const addNote = async (note) => {
+    setProgress(10);
+
     if (note.tag.length === 0) {
       note.tag = "General";
     }
+
     let response = await MakeRequest(
       localStorage.getItem("token"),
       "post",
       "notes/addnote",
       note
     );
+
+    setProgress(50);
 
     if (response.data.code === 1) {
       setNotes(notes.concat(response.data.data));
@@ -99,10 +95,16 @@ const NoteState = (props) => {
 
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
+
+    setProgress(100);
   };
 
   const login = async (credentials) => {
+    setProgress(10);
+
     let response = await MakeRequest("", "post", "auth/login", credentials);
+
+    setProgress(50);
 
     if (response.data.code === 1) {
       localStorage.setItem("token", response.data.token);
@@ -114,9 +116,13 @@ const NoteState = (props) => {
 
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
+
+    setProgress(100);
   };
 
   const signup = async (credentials) => {
+    setProgress(10);
+
     let response = await MakeRequest(
       "",
       "post",
@@ -124,6 +130,8 @@ const NoteState = (props) => {
       credentials
     );
 
+    setProgress(50);
+
     if (response.data.code === 1) {
       localStorage.setItem("token", response.data.token);
       navigate("/");
@@ -134,15 +142,14 @@ const NoteState = (props) => {
 
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
+
+    setProgress(100);
   };
 
   const onLogoutClick = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-
-    setSnackbarText("Successfully logged out!");
-    setSnackbarState(true);
-    setNotes([]);
+    setConfirmationDialogTitle("Are you sure you want to logout?");
+    setConfirmationPositiveButtonText("Logout");
+    setconfirmationState(true);
   };
 
   // -->snackbar related functions
@@ -154,6 +161,60 @@ const NoteState = (props) => {
   const handleSnackBarClose = () => {
     setSnackbarState(false);
   };
+
+  // --> top loading bar state
+  const [progress, setProgress] = useState(0);
+
+  // --> conformation functions
+  const [confirmationState, setconfirmationState] = useState(false);
+  const [confirmationPositiveButtonText, setConfirmationPositiveButtonText] =
+    useState("");
+  const [confirmationDialogTitle, setConfirmationDialogTitle] = useState("");
+
+  const confirmationHandleClose = () => {
+    setconfirmationState(false);
+  };
+
+  const handleConfirmationPositiveClick = async () => {
+    setconfirmationState(false);
+
+    if (confirmationPositiveButtonText === "Delete") {
+      setProgress(10);
+
+      let response = await MakeRequest(
+        localStorage.getItem("token"),
+        "delete",
+        `notes/deletenote/${deleteId}`,
+        null
+      );
+
+      setProgress(50);
+
+      if (response.data.code === 1) {
+        const newNotes = notes.filter((note) => {
+          return note._id !== deleteId;
+        });
+        setNotes(newNotes);
+        setSeverity("success");
+      } else {
+        setSeverity("error");
+      }
+
+      setSnackbarText(response.data.msg);
+      setSnackbarState(true);
+
+      setProgress(100);
+    } else if (confirmationPositiveButtonText === "Logout") {
+      localStorage.removeItem("token");
+      navigate("/login");
+      setSnackbarText("Successfully logged out!");
+      setSnackbarState(true);
+      setNotes([]);
+    }
+  };
+
+  // --> delete id store
+  const [deleteId, setDeleteId] = useState("");
 
   return (
     <GlobalContext.Provider
@@ -171,6 +232,12 @@ const NoteState = (props) => {
         login,
         signup,
         onLogoutClick,
+        progress,
+        confirmationState,
+        confirmationHandleClose,
+        handleConfirmationPositiveClick,
+        confirmationPositiveButtonText,
+        confirmationDialogTitle,
       }}
     >
       {props.children}
