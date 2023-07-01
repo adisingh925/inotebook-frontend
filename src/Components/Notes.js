@@ -48,6 +48,7 @@ function Notes() {
   const handleAddClicked = () => {
     setPositiveButtonText("Save");
     setDialogTitle("Add New Note");
+    setNote({title : "", tag : "General", description : ""})
     setOpen(true);
   };
 
