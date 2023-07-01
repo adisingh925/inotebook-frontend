@@ -18,7 +18,8 @@ function Notes() {
     } else {
       navigate("/login");
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // --> update and delete button functions
 
