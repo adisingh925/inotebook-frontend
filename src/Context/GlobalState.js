@@ -9,20 +9,34 @@ const NoteState = (props) => {
   const [notes, setNotes] = useState([]);
 
   const getAllNotes = async () => {
-    let response = await MakeRequest(
-      localStorage.getItem("token"),
-      "get",
-      "notes/fetchallnotes",
-      null
-    );
+    setProgress(65);
 
-    if (response.data.code === 1) {
-      setNotes(response.data.data);
-    } else {
+    try {
+      let response = await MakeRequest(
+        localStorage.getItem("token"),
+        "get",
+        "notes/fetchallnotes",
+        null
+      );
+
+      setProgress(75);
+
+      if (response.data.code === 1) {
+        setNotes(response.data.data);
+      } else {
+        setSeverity("error");
+        setSnackbarText(response.data.msg);
+        setSnackbarState(true);
+      }
+    } catch (error) {
       setSeverity("error");
-      setSnackbarText(response.data.msg);
+      setSnackbarText(
+        "We have encountered a CORS error becuase of state loss in our serverless hosting platform, please refresh to fix it!"
+      );
       setSnackbarState(true);
     }
+
+    setProgress(100);
   };
 
   const deleteNote = async (id) => {

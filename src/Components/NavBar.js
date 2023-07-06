@@ -12,7 +12,7 @@ function NavBar(props) {
     <>
       <nav className="navbar border-bottom navbar-expand-lg bg-white">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand">
             {props.heading}
           </Link>
           <button
