@@ -30,9 +30,7 @@ const NoteState = (props) => {
       }
     } catch (error) {
       setSeverity("error");
-      setSnackbarText(
-        "We have encountered a CORS error becuase of state loss in our serverless hosting platform, please refresh to fix it!"
-      );
+      setSnackbarText("CORS ERROR!");
       setSnackbarState(true);
     }
 
