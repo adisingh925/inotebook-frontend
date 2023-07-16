@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import globalContext from "../Context/GlobalContext";
 import Button from "@mui/material/Button";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Google from "./google";
 
 function Login() {
   const context = useContext(globalContext);
@@ -62,9 +64,18 @@ function Login() {
             id="exampleInputPassword1"
           />
         </div>
-        <Button type="submit" variant="contained">
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          style={{ marginBottom: "20px", marginTop: "15px" }}
+        >
           Login
         </Button>
+
+        <GoogleOAuthProvider clientId="34822599945-sm8fknc645c0sksreddm5n16a1f9nd1j.apps.googleusercontent.com">
+          <Google />
+        </GoogleOAuthProvider>
       </form>
     </div>
   );
