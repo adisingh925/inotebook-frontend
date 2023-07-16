@@ -74,7 +74,7 @@ function Login() {
         </Button>
 
         <GoogleOAuthProvider clientId="34822599945-sm8fknc645c0sksreddm5n16a1f9nd1j.apps.googleusercontent.com">
-          <Google />
+          <Google text="signin_with"/>
         </GoogleOAuthProvider>
       </form>
     </div>

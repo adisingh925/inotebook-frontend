@@ -2,7 +2,7 @@ import React from "react";
 
 import { GoogleLogin } from "@react-oauth/google";
 
-const google = () => {
+const google = (props) => {
   return (
     <GoogleLogin
       onSuccess={(credentialResponse) => {
@@ -14,6 +14,7 @@ const google = () => {
       useOneTap={true}
       shape="rectangular"
       width="284px"
+      text={props.text}
       theme="filled_blue"
       type="standard"
       size="large"
