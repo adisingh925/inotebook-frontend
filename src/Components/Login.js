@@ -3,6 +3,7 @@ import globalContext from "../Context/GlobalContext";
 import Button from "@mui/material/Button";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Google from "./google";
+import SeperatingLine from "./SeperatingLine";
 
 function Login() {
   const context = useContext(globalContext);
@@ -73,8 +74,10 @@ function Login() {
           Login
         </Button>
 
+        <SeperatingLine text="Or"/>
+
         <GoogleOAuthProvider clientId="34822599945-sm8fknc645c0sksreddm5n16a1f9nd1j.apps.googleusercontent.com">
-          <Google text="signin_with"/>
+          <Google text="signin_with" />
         </GoogleOAuthProvider>
       </form>
     </div>
