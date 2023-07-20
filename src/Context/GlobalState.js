@@ -10,7 +10,14 @@ const NoteState = (props) => {
   const [note, setNote] = useState({});
 
   const getNote = async (id) => {
-    let response = await MakeRequest("", "get", `notes/readnote?id=${id}`, { id });
+    setProgress(10);
+    setNote({})
+
+    let response = await MakeRequest("", "get", `notes/readnote?id=${id}`, {
+      id,
+    });
+
+    setProgress(50);
 
     if (response.data.code === 1) {
       setNote(response.data.data);
@@ -20,8 +27,12 @@ const NoteState = (props) => {
       setSeverity("error");
     }
 
+    setProgress(75);
+
     setSnackbarText(response.data.msg);
     setSnackbarState(true);
+
+    setProgress(100);
   };
 
   const getAllNotes = async () => {

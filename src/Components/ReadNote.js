@@ -1,7 +1,7 @@
 import { React, useEffect, useContext } from "react";
 import globalContext from "../Context/GlobalContext";
 
-function ReadNote(props) {
+function ReadNote() {
   const context = useContext(globalContext);
   const { note, getNote } = context;
 
@@ -16,11 +16,8 @@ function ReadNote(props) {
   return (
     <div className="card my-3">
       <div className="card-body">
-        <span className="badge rounded-pill text-bg-primary">
-          {note.tag}
-        </span>
+        <span className="badge rounded-pill text-bg-primary">{note.tag}</span>
         <h5 className="card-title my-3">{note.title}</h5>
-
         <p className="card-text">{note.description}</p>
       </div>
     </div>
