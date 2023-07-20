@@ -9,6 +9,7 @@ import { useContext } from "react";
 import globalContext from "../Context/GlobalContext";
 import LoadingBar from "react-top-loading-bar";
 import Confirmation from "./Confirmation";
+import ReadNote from "./ReadNote";
 
 function Main() {
   const context = useContext(globalContext);
@@ -52,6 +53,7 @@ function Main() {
         <Route exact path="/about" element={<About />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/readnote" element={<ReadNote/>}/>
       </Routes>
     </>
   );

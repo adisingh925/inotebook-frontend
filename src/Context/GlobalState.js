@@ -7,6 +7,22 @@ const NoteState = (props) => {
   let navigate = useNavigate();
 
   const [notes, setNotes] = useState([]);
+  const [note, setNote] = useState({});
+
+  const getNote = async (id) => {
+    let response = await MakeRequest("", "get", `notes/readnote?id=${id}`, { id });
+
+    if (response.data.code === 1) {
+      setNote(response.data.data);
+      console.log(response.data.data);
+      setSeverity("success");
+    } else {
+      setSeverity("error");
+    }
+
+    setSnackbarText(response.data.msg);
+    setSnackbarState(true);
+  };
 
   const getAllNotes = async () => {
     setProgress(65);
@@ -250,6 +266,8 @@ const NoteState = (props) => {
         handleConfirmationPositiveClick,
         confirmationPositiveButtonText,
         confirmationDialogTitle,
+        note,
+        getNote,
       }}
     >
       {props.children}

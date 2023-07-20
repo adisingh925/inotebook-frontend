@@ -1,5 +1,7 @@
 import React from "react";
 import Fab from "@mui/material/Fab";
+import TextTruncate from "react-text-truncate"; // recommend
+import { Link } from "react-router-dom";
 
 function NoteItem(props) {
   return (
@@ -10,7 +12,15 @@ function NoteItem(props) {
             {props.note.tag}
           </span>
           <h5 className="card-title my-2">{props.note.title}</h5>
-          <p className="card-text">{props.note.description}</p>
+          <p className="card-text">
+            <TextTruncate
+              line={2}
+              element="span"
+              truncateText="…"
+              text={props.note.description}
+              textTruncateChild={<Link to={`/readnote?id=${props.note._id}`}>Read on</Link>}
+            />
+          </p>
           <Fab
             size="small"
             onClick={() => {
